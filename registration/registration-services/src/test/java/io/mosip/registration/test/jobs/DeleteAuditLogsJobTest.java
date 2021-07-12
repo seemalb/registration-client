@@ -1,4 +1,4 @@
-<<<<<<< HEAD:registration/registration-services/src/test/java/io/mosip/registration/test/jobs/DeleteAuditLogsJobTest.java
+HEAD:registration/registration-services/src/test/java/io/mosip/registration/test/jobs/DeleteAuditLogsJobTest.java
 package io.mosip.registration.test.jobs;
 
 import java.util.HashMap;
@@ -192,7 +192,6 @@ public class DeleteAuditLogsJobTest {
 	}
 
 }
-=======
 package io.mosip.registration.test.jobs;
 
 import java.util.HashMap;
@@ -382,4 +381,4 @@ public class RegistrationPacketVirusScanJobTest {
 	}
 
 }
->>>>>>> mosip:registration/registration-services/src/test/java/io/mosip/registration/test/jobs/RegistrationPacketVirusScanJobTest.java
+mosip:registration/registration-services/src/test/java/io/mosip/registration/test/jobs/RegistrationPacketVirusScanJobTest.java
