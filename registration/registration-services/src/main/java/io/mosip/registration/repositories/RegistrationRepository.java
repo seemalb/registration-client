@@ -166,10 +166,20 @@ public interface RegistrationRepository extends BaseRepository<Registration, Str
 			List<String> serverStatusCodes);
 
 	@Query("select clientStatusCode, serverStatusCode, count(*) from Registration group by clientStatusCode, serverStatusCode")
-	List<Object[]> getStatusBasedCount();
+	List<Object[]> getStatusBasedCount();	
+	
+	Long countByClientStatusCodeInOrderByUpdDtimesDesc(List<String> statusCodes);
+	
+	Registration findTopByClientStatusCodeInOrderByUpdDtimesDesc(List<String> statusCodes);
+
+	Long countByclientStatusCodeOrderByCrDtimeAsc(String statusCode);
+	
+	Registration findTopByclientStatusCodeOrderByCrDtimeAsc(String statusCode);
 	
 	Registration findByAppId(String applicationId);
 	
 	@Query("select id from Registration where appId=:appId")
 	String getRIDByAppId(@Param("appId") String appId);
+
+	List<Registration> findByClientStatusCommentsOrderByCrDtime(String statusComment);
 }

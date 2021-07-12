@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.springframework.context.ApplicationContext;
 
+import io.mosip.registration.dto.mastersync.GenericDto;
 import io.mosip.commons.packet.dto.packet.SimpleDto;
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.logger.spi.Logger;
@@ -26,8 +27,7 @@ import io.mosip.registration.controller.Initialization;
 import io.mosip.registration.controller.VirtualKeyboard;
 import io.mosip.registration.controller.reg.Validations;
 import io.mosip.registration.dto.RegistrationDTO;
-import io.mosip.registration.dto.UiSchemaDTO;
-import io.mosip.registration.dto.mastersync.GenericDto;
+import io.mosip.registration.dto.schema.UiSchemaDTO;
 import io.mosip.registration.util.common.DemographicChangeActionHandler;
 import io.mosip.registration.util.control.FxControl;
 import javafx.collections.ObservableList;
@@ -68,14 +68,8 @@ public class TextFieldFxControl extends FxControl {
 	
 	private Node keyboardNode;
 	
-	private boolean keyboardVisible = false;
-	
 	private static double xPosition;
 	private static double yPosition;
-	
-	private String previousLangCode;
-	
-	private Stage keyBoardStage;
 	
 	private FXComponents fxComponents;
 	
@@ -170,6 +164,7 @@ public class TextFieldFxControl extends FxControl {
 		/** Title label */
 		Label fieldTitle = getLabel(uiSchemaDTO.getId() + RegistrationConstants.LABEL, "",
 				RegistrationConstants.DEMOGRAPHIC_FIELD_LABEL, true, simpleTypeVBox.getWidth());
+		changeNodeOrientation(fieldTitle, getRegistrationDTo().getSelectedLanguagesByApplicant().get(0));
 
 		simpleTypeVBox.getChildren().add(fieldTitle);
 
@@ -379,10 +374,10 @@ public class TextFieldFxControl extends FxControl {
 			Node node = (Node) event.getSource();
 			node.requestFocus();
 			Node parentNode = node.getParent().getParent().getParent();
-			if (keyboardVisible) {
-				keyBoardStage.close();
-				keyboardVisible = false;
-				if (!langCode.equalsIgnoreCase(previousLangCode)) {
+			if (genericController.isKeyboardVisible()) {
+				genericController.getKeyboardStage().close();
+				genericController.setKeyboardVisible(false);
+				if (!textField.getId().equalsIgnoreCase(genericController.getPreviousId())) {
 					openKeyBoard(keyBoard, langCode, textField, parentNode);
 				}
 			} else {
@@ -396,8 +391,8 @@ public class TextFieldFxControl extends FxControl {
 	}
 	
 	private void openKeyBoard(VirtualKeyboard keyBoard, String langCode, TextField textField, Node parentNode) {
-		if (keyBoardStage != null)  {
-			keyBoardStage.close();
+		if (genericController.getKeyboardStage() != null)  {
+			genericController.getKeyboardStage().close();
 		}
 		keyboardNode = keyBoard.view();
 		keyBoard.setParentStage(fxComponents.getStage());
@@ -405,8 +400,8 @@ public class TextFieldFxControl extends FxControl {
 		keyboardNode.setManaged(true);
 		getField(textField.getId()).requestFocus();
 		openKeyBoardPopUp();
-		previousLangCode = langCode;
-		keyboardVisible = true;
+		genericController.setPreviousId(textField.getId());
+		genericController.setKeyboardVisible(true);
 	}
 
 	private GridPane prepareMainGridPaneForKeyboard() {
@@ -427,7 +422,8 @@ public class TextFieldFxControl extends FxControl {
 	
 	private void openKeyBoardPopUp() {
 		try {
-			keyBoardStage = new Stage();
+			Stage keyBoardStage = new Stage();
+			genericController.setKeyboardStage(keyBoardStage);
 			keyBoardStage.setAlwaysOnTop(true);
 			keyBoardStage.initStyle(StageStyle.UNDECORATED);
 			keyBoardStage.setX(300);

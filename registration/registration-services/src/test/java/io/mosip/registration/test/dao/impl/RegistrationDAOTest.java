@@ -33,7 +33,7 @@ import io.mosip.registration.dto.PacketStatusDTO;
 import io.mosip.registration.dto.RegistrationCenterDetailDTO;
 import io.mosip.registration.dto.RegistrationDTO;
 import io.mosip.registration.dto.RegistrationMetaDataDTO;
-import io.mosip.registration.dto.demographic.ValuesDTO;
+import io.mosip.registration.dto.schema.ValuesDTO;
 import io.mosip.registration.entity.Registration;
 import io.mosip.registration.entity.UserDetail;
 import io.mosip.registration.exception.RegBaseCheckedException;
@@ -114,7 +114,7 @@ public class RegistrationDAOTest {
 	public void updateRegStatusTest() {
 		Registration updatedPacket = new Registration();
 		updatedPacket.setUploadCount((short)0);
-		Mockito.when(registrationRepository.getOne(Mockito.any())).thenReturn(updatedPacket);
+		Mockito.when(registrationRepository.findByAppId(Mockito.any())).thenReturn(updatedPacket);
 		Mockito.when(registrationRepository.update(updatedPacket)).thenReturn(updatedPacket);
 		
 		PacketStatusDTO packetStatusDTO=new PacketStatusDTO();

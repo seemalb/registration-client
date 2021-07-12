@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.registration.config.AppConfig;
 import io.mosip.registration.constants.RegistrationClientStatusCode;
-import io.mosip.registration.dao.AuditLogControlDAO;
 import io.mosip.registration.dao.RegPacketStatusDAO;
-import io.mosip.registration.entity.AuditLogControl;
 import io.mosip.registration.entity.Registration;
 import io.mosip.registration.repositories.RegistrationRepository;
 
@@ -28,10 +26,7 @@ public class RegPacketStatusDAOImpl implements RegPacketStatusDAO {
 	/** The registration repository. */
 	@Autowired
 	private RegistrationRepository registrationRepository;
-
-	@Autowired
-	private AuditLogControlDAO auditLogControlDAO;
-
+	
 	/**
 	 * Object for Logger
 	 */
@@ -50,6 +45,15 @@ public class RegPacketStatusDAOImpl implements RegPacketStatusDAO {
 
 		return registrationRepository
 				.findByclientStatusCodeOrderByCrDtime(RegistrationClientStatusCode.UPLOADED_SUCCESSFULLY.getCode());
+
+	}
+	
+	@Override
+	public List<Registration> getPacketIdsByStatusExported() {
+		LOGGER.info("Getting packets by status comment - EXPORTED has been started");
+
+		return registrationRepository
+				.findByClientStatusCommentsOrderByCrDtime(RegistrationClientStatusCode.EXPORT.getCode());
 
 	}
 
@@ -85,16 +89,8 @@ public class RegPacketStatusDAOImpl implements RegPacketStatusDAO {
 	public void delete(Registration registration) {
 		LOGGER.info("Delete registration has been started");
 
-		AuditLogControl auditLogControl = auditLogControlDAO.get(registration.getId());
-		LOGGER.debug("Queried auditLogControl for registration {}, auditslogs: {}", registration.getId(), auditLogControl);
-		if(auditLogControl != null) {
-			/* Delete Audit Logs */
-			auditLogControlDAO.delete(auditLogControl);
-		}
-
 		/* Delete Registartion */
 		registrationRepository.deleteById(registration.getId());
-
 	}
 
 }
