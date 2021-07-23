@@ -1,23 +1,5 @@
 package io.mosip.registration.dao.impl;
 
-import static io.mosip.registration.constants.LoggerConstants.LOG_SAVE_PKT;
-import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
-import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
-
 import io.mosip.commons.packet.dto.packet.SimpleDto;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.core.util.DateUtils;
@@ -41,6 +23,18 @@ import io.mosip.registration.exception.RegistrationExceptionConstants;
 import io.mosip.registration.repositories.RegistrationRepository;
 import io.mosip.registration.service.IdentitySchemaService;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.util.*;
+
+import static io.mosip.registration.constants.LoggerConstants.LOG_SAVE_PKT;
+import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
+import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
 
 /**
  * The implementation class of {@link RegistrationDAO}.
@@ -366,19 +360,24 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 		return registrationRepository.findAllById(iterableRegIds);
 	}
 
+	@Override
+	public List<Registration> get(Timestamp crDtimes, String serverStatusCode) {
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see io.mosip.registration.dao.RegistrationDAO#get(java.sql.Timestamp,
 	 * java.lang.String)
 	 */
-	@Override
-	public List<Registration> get(Timestamp crDtimes, String serverStatusCode) {
+	
+	public List<Registration> get(Timestamp crDtimes,List<String> serverStatusCode) {
 
 		LOGGER.debug("REGISTRATION - BY_STATUS - REGISTRATION_DAO", APPLICATION_NAME, APPLICATION_ID,
 				"Retrieving Registrations based on crDtime and status");
 
-		return registrationRepository.findByCrDtimeBeforeAndServerStatusCode(crDtimes, serverStatusCode);
+		return registrationRepository.findByCrDtimeBeforeAndServerStatusCodeIn(crDtimes, serverStatusCode);
 
 	}
 

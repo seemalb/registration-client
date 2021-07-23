@@ -1,14 +1,13 @@
 package io.mosip.registration.repositories;
 
-import java.sql.Timestamp;
-import java.util.List;
-
+import io.mosip.kernel.core.dataaccess.spi.repository.BaseRepository;
+import io.mosip.registration.entity.Registration;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import io.mosip.kernel.core.dataaccess.spi.repository.BaseRepository;
-import io.mosip.registration.entity.Registration;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * The repository interface for {@link Registration}
@@ -135,7 +134,9 @@ public interface RegistrationRepository extends BaseRepository<Registration, Str
 	 * @return list of registrations
 	 */
 	List<Registration> findByCrDtimeBeforeAndServerStatusCode(Timestamp crDtimes, String clientStatus);
-	
+
+	List<Registration> findByCrDtimeBeforeAndServerStatusCodeIn(Timestamp crDtimes,List<String> serverStatusCode);
+
 	/**
 	 * fetches all the Registration records which is having the given server status
 	 * codes.

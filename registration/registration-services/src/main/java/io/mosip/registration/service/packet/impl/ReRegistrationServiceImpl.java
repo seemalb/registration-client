@@ -1,15 +1,5 @@
 package io.mosip.registration.service.packet.impl;
 
-import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
-import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.registration.config.AppConfig;
 import io.mosip.registration.constants.LoggerConstants;
@@ -20,6 +10,14 @@ import io.mosip.registration.dto.PacketStatusDTO;
 import io.mosip.registration.entity.Registration;
 import io.mosip.registration.service.BaseService;
 import io.mosip.registration.service.packet.ReRegistrationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static io.mosip.registration.constants.RegistrationConstants.*;
 
 /**
  * Implementation class for {@link ReRegistrationService}
@@ -50,7 +48,7 @@ public class ReRegistrationServiceImpl extends BaseService implements ReRegistra
 		LOGGER.info(LoggerConstants.LOG_GET_RE_REGISTER_PKT, APPLICATION_NAME, APPLICATION_ID,
 				"Getting all the re-registration packets from the table");
 		String[] packetStatus = { RegistrationClientStatusCode.UPLOADED_SUCCESSFULLY.getCode(),
-				RegistrationConstants.RE_REGISTRATION_STATUS };
+				RegistrationConstants.RE_REGISTRATION_STATUS,PACKET_STATUS_CODE_REJECTED };
 		List<Registration> reRegisterPackets = registrationDAO.getAllReRegistrationPackets(packetStatus);
 		List<PacketStatusDTO> uiPacketDto = new ArrayList<>();
 		for (Registration reRegisterPacket : reRegisterPackets) {

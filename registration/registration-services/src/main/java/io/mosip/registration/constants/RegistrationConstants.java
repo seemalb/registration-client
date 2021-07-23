@@ -905,6 +905,10 @@ public class RegistrationConstants {
 
 	public static final List<String> PACKET_STATUS_UPLOAD = Arrays.asList("APPROVED", "REJECTED", "SYNCED", "EXPORTED");
 
+	public static final List<String> PACKET_PROCESSED_STATUS = Arrays.asList("PROCESSED", "ACCEPTED");
+
+	public static final List<String> PACKET_REREGISTER_STATUS = Arrays.asList("REREGISTER", "REJECTED");
+
 	public static final List<String> PACKET_EXPORT_STATUS = Arrays.asList("APPROVED", "EXPORTED", "SYNCED");
 
 	// Pre Registration
